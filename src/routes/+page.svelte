@@ -1,2 +1,22 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script>
+	let { data } = $props()
+
+	const person = data.person
+</script>
+
+<main>
+	<article class="profile-card">
+		<h1>{person.name}</h1>
+
+		{#if person.avatar}
+			<img
+				src={person.avatar}
+				alt={person.name}
+			/>
+		{/if}
+
+		{#if person.bio}
+			<p>{person.bio}</p>
+		{/if}
+	</article>
+</main>
