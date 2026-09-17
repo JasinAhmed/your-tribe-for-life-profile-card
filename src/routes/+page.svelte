@@ -53,7 +53,67 @@
 
 <main class="profile-page">
 	<article class:open={isOpen} class="book">
-		<div class="book-pages">
+		<section class="right-page">
+			<section class="about">
+				<h2>ABOUT ME</h2>
+
+				<p>
+					{person.bio || 'This member has not written an about me yet.'}
+				</p>
+			</section>
+
+			<section class="skills">
+				<h2>SKILLS</h2>
+
+				<ul>
+					{#each skills as skill}
+						<li>{skill}</li>
+					{:else}
+						<li>No skills available</li>
+					{/each}
+				</ul>
+			</section>
+
+			<section class="hobbies">
+				<h2>HOBBIES</h2>
+
+				<ul>
+					{#each hobbies as hobby}
+						<li>{hobby}</li>
+					{:else}
+						<li>No hobbies available</li>
+					{/each}
+				</ul>
+			</section>
+
+			<button
+				class="close-book"
+				type="button"
+				onclick={toggleBook}
+			>
+				CLOSE BOOK
+			</button>
+		</section>
+
+		<div class="turning-page">
+			<button
+				class="front-cover"
+				type="button"
+				onclick={toggleBook}
+			>
+				<span class="cover-logo">
+					{initials}
+				</span>
+
+				<h1>{person.name}</h1>
+
+				<span class="cover-line"></span>
+
+				<span class="cover-instruction">
+					CLICK TO OPEN
+				</span>
+			</button>
+
 			<section class="left-page">
 				{#if person.mugshot_year2}
 					<picture class="image-wrapper">
@@ -117,67 +177,7 @@
 					</nav>
 				</section>
 			</section>
-
-			<section class="right-page">
-				<section class="about">
-					<h2>ABOUT ME</h2>
-
-					<p>
-						{person.bio || 'This member has not written an about me yet.'}
-					</p>
-				</section>
-
-				<section class="skills">
-					<h2>SKILLS</h2>
-
-					<ul>
-						{#each skills as skill}
-							<li>{skill}</li>
-						{:else}
-							<li>No skills available</li>
-						{/each}
-					</ul>
-				</section>
-
-				<section class="hobbies">
-					<h2>HOBBIES</h2>
-
-					<ul>
-						{#each hobbies as hobby}
-							<li>{hobby}</li>
-						{:else}
-							<li>No hobbies available</li>
-						{/each}
-					</ul>
-				</section>
-
-				<button
-					class="close-book"
-					type="button"
-					onclick={toggleBook}
-				>
-					CLOSE BOOK
-				</button>
-			</section>
 		</div>
-
-		<button
-			class="front-cover"
-			type="button"
-			onclick={toggleBook}
-		>
-			<span class="cover-logo">
-				{initials}
-			</span>
-
-			<h1>{person.name}</h1>
-
-			<span class="cover-line"></span>
-
-			<span class="cover-instruction">
-				CLICK TO OPEN
-			</span>
-		</button>
 	</article>
 </main>
 
@@ -197,6 +197,7 @@
 		--book-radius: 1rem;
 		--book-shadow: 0 0.5rem 1rem #0000001a;
 		--page-padding: 2rem;
+		--page-height: 34rem;
 
 		/* Natural animation speed and easing */
 		--book-duration: 1.1s;
@@ -213,6 +214,7 @@
 		background-color: var(--page-background);
 
 		box-sizing: border-box;
+		overflow-x: hidden;
 	}
 
 	.book {
@@ -220,72 +222,64 @@
 
 		width: 100%;
 		max-width: 22rem;
-		height: 34rem;
+		height: var(--page-height);
 
-		background-color: var(--paper-color);
-		border-radius: var(--book-radius);
-		box-shadow: var(--book-shadow);
-
-		/* Gives the cover depth during the rotation */
 		perspective: 100rem;
+		perspective-origin: center;
+		transform-style: preserve-3d;
+
 		overflow: hidden;
 
 		transition:
-			max-width var(--book-duration) var(--book-easing),
 			height var(--book-duration) var(--book-easing),
-			box-shadow var(--book-duration) ease;
+			transform var(--book-duration) var(--book-easing);
 
 		&.open {
-			height: 68rem;
+			height: calc(var(--page-height) * 2);
 
-			box-shadow: 0 1rem 2rem #00000026;
-
-			.book-pages {
-				opacity: 1;
-				visibility: visible;
-
-				transform: translateY(0);
-
-				transition:
-					opacity 0.5s ease 0.45s,
-					transform 0.7s var(--book-easing) 0.35s,
-					visibility 0s;
-			}
-
-			.front-cover {
-				opacity: 0;
-
-				/* Allow clicks on the social links behind the cover */
-				pointer-events: none;
-
-				transform: rotateY(-180deg) scale(0.98);
+			.turning-page {
+				/* Flip vertically on mobile */
+				transform: rotateX(-180deg);
 			}
 		}
 	}
 
-	.book-pages {
+	/* This element contains both sides of the turning cover */
+
+	.turning-page {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 2;
+
+		width: 100%;
+		height: var(--page-height);
+
+		transform: rotateX(0);
+		transform-origin: center;
+		transform-style: preserve-3d;
+
+		will-change: transform;
+
+		transition:
+			transform var(--book-duration) var(--book-easing);
+	}
+
+	.front-cover,
+	.left-page {
 		position: absolute;
 		inset: 0;
 
 		width: 100%;
 		height: 100%;
 
-		opacity: 0;
-		visibility: hidden;
+		backface-visibility: hidden;
+		-webkit-backface-visibility: hidden;
 
-		transform: translateY(0.75rem);
-
-		overflow-y: auto;
-
-		transition:
-			opacity 0.25s ease,
-			transform 0.4s ease,
-			visibility 0s linear var(--book-duration);
+		box-sizing: border-box;
 	}
 
 	.front-cover {
-		position: absolute;
-		inset: 0;
 		z-index: 2;
 
 		display: flex;
@@ -293,8 +287,6 @@
 		justify-content: center;
 		align-items: center;
 
-		width: 100%;
-		height: 100%;
 		padding: var(--page-padding);
 
 		color: var(--cover-text-color);
@@ -316,22 +308,11 @@
 			0.5rem 0.5rem 0 #000000,
 			0 0 0 0.3rem var(--cover-background);
 
-		/* Hide the back of the cover while it turns */
-		backface-visibility: hidden;
-		box-sizing: border-box;
 		cursor: pointer;
 
-		/* The cover rotates from the left side like a real book */
-		transform: rotateY(0) scale(1);
-		transform-origin: left center;
-		transform-style: preserve-3d;
-
-		will-change: transform, opacity;
-
 		transition:
-			transform var(--book-duration) var(--book-easing),
-			opacity 0.25s ease 0.75s,
-			box-shadow var(--book-duration) ease;
+			box-shadow 0.3s ease,
+			transform 0.3s ease;
 
 		h1 {
 			margin: 0;
@@ -383,17 +364,28 @@
 				0.7rem 0.7rem 0 #000000,
 				0 0 0 0.3rem var(--cover-background);
 
-			transform: rotateY(-3deg) translateY(-0.15rem);
+			transform: translateY(-0.15rem);
 		}
 
 		&:focus-visible {
 			outline: 0.2rem solid #ffffff;
-			outline-offset: 0.3rem;
+			outline-offset: -0.5rem;
 		}
 	}
 
+	/* The left page is the back of the front cover */
+
 	.left-page {
 		padding: var(--page-padding);
+
+		background-color: var(--paper-color);
+		border-radius: var(--book-radius);
+		box-shadow: var(--book-shadow);
+
+		/* Match the vertical mobile rotation */
+		transform: rotateX(180deg);
+
+		overflow-y: auto;
 
 		.image-wrapper {
 			display: block;
@@ -486,9 +478,21 @@
 	}
 
 	.right-page {
+		position: absolute;
+		top: var(--page-height);
+		left: 0;
+		z-index: 0;
+
+		width: 100%;
+		height: var(--page-height);
 		padding: var(--page-padding);
 
-		border-top: 0.15rem solid var(--line-color);
+		background-color: var(--paper-color);
+		border-radius: var(--book-radius);
+		box-shadow: var(--book-shadow);
+
+		box-sizing: border-box;
+		overflow-y: auto;
 
 		.about,
 		.skills,
@@ -545,6 +549,7 @@
 
 				&:first-child {
 					color: #ffffff;
+
 					background-color: var(--heading-color);
 					border-color: var(--heading-color);
 				}
@@ -581,6 +586,7 @@
 
 			&:hover {
 				color: var(--heading-color);
+
 				background-color: #d9d9d9;
 
 				transform: translateY(-0.1rem);
@@ -598,18 +604,31 @@
 			align-items: center;
 
 			padding: 2rem;
+			overflow: hidden;
 		}
 
 		.book {
+			--page-height: 38rem;
+
+			overflow: visible;
+
 			&.open {
-				max-width: 52rem;
-				height: 38rem;
+				height: var(--page-height);
+
+				transform: translateX(50%);
+
+				.turning-page {
+					/* Open horizontally like a real book */
+					transform: rotateY(-180deg);
+				}
 			}
 		}
 
-		.book-pages {
-			display: grid;
-			grid-template-columns: repeat(2, 1fr);
+		.turning-page {
+			height: var(--page-height);
+
+			transform: rotateY(0);
+			transform-origin: left center;
 		}
 
 		.left-page,
@@ -622,6 +641,16 @@
 			flex-direction: column;
 			justify-content: center;
 
+			border-right: 0.15rem solid var(--line-color);
+			border-radius:
+				var(--book-radius)
+				0
+				0
+				var(--book-radius);
+
+			/* Match the horizontal desktop rotation */
+			transform: rotateY(180deg);
+
 			.image-wrapper {
 				max-width: 15rem;
 				margin: 0 auto 1.5rem;
@@ -629,19 +658,24 @@
 		}
 
 		.right-page {
+			top: 0;
+
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
 
-			border-top: 0;
-			border-left: 0.15rem solid var(--line-color);
+			border-radius:
+				0
+				var(--book-radius)
+				var(--book-radius)
+				0;
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
 		.book,
+		.turning-page,
 		.front-cover,
-		.book-pages,
 		.social-link,
 		.close-book {
 			transition-duration: 0.01ms;
