@@ -130,3 +130,32 @@
 		</section>
 	</article>
 </main>
+<style>
+	.profile-page {
+		--paper-color: #fffdf6;
+		--text-color: #173c33;
+		--accent-color: #ef8c43;
+
+		display: flex;
+		justify-content: center;
+
+		width: 100%;
+		min-height: 100svh;
+		padding: 1rem;
+
+		background-color: #f5f0e5;
+
+		box-sizing: border-box;
+	}
+
+	.book {
+		width: 100%;
+		max-width: 22rem;
+
+		background-color: var(--paper-color);
+		border-radius: 1rem;
+		box-shadow: 0 0.5rem 1rem #0000001a;
+
+		overflow: hidden;
+	}
+</style>
