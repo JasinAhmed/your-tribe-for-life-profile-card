@@ -110,7 +110,7 @@
 							rel="noopener noreferrer"
 						>
 							<img
-								src="/Linkedin.png"
+								src="/linkedin.png"
 								alt="LinkedIn"
 							/>
 						</a>
@@ -183,18 +183,17 @@
 
 <style>
 	.profile-page {
-		--page-background: #f5f0e5;
-		--paper-color: #fffdf6;
-		--heading-color: #173c33;
+		--page-background: #eeeeee;
+		--paper-color: #ffffff;
+		--heading-color: #111111;
 		--body-text-color: #111111;
-		--label-color: #5b7a71;
-		--accent-color: #ef8c43;
-		--skill-background: #c8d9d3;
-		--line-color: #333333;
-		--social-border-color: #d7d0c0;
-		--cover-background: #050505;
+		--label-color: #444444;
+		--skill-background: #e5e5e5;
+		--line-color: #222222;
+		--social-border-color: #bcbcbc;
+		--cover-background: #111111;
 		--cover-text-color: #ffffff;
-		--cover-detail-color: #d6b765;
+		--cover-detail-color: #ffffff;
 		--book-radius: 1rem;
 		--book-shadow: 0 0.5rem 1rem #0000001a;
 		--page-padding: 2rem;
@@ -303,18 +302,18 @@
 
 		background:
 			linear-gradient(
-				135deg,
-				#050505 0%,
-				#151515 55%,
-				#050505 100%
+				145deg,
+				#2b2b2b 0%,
+				var(--cover-background) 50%,
+				#000000 100%
 			);
 
 		border: 0.15rem solid var(--cover-detail-color);
-		border-left: 0.7rem solid var(--heading-color);
+		border-left: 0.7rem solid #000000;
 		border-radius: var(--book-radius);
 
 		box-shadow:
-			0.5rem 0.5rem 0 var(--heading-color),
+			0.5rem 0.5rem 0 #000000,
 			0 0 0 0.3rem var(--cover-background);
 
 		/* Hide the back of the cover while it turns */
@@ -337,6 +336,7 @@
 		h1 {
 			margin: 0;
 
+			color: var(--cover-text-color);
 			font-size: 1.5rem;
 			text-align: center;
 		}
@@ -349,15 +349,17 @@
 			height: 6rem;
 			margin-bottom: 1.5rem;
 
-			color: var(--cover-detail-color);
+			color: var(--cover-text-color);
 			font-size: 1.8rem;
 			font-weight: bold;
 
-			background-color: #1d1d1d;
-			border: 0.1rem solid #333333;
+			background-color: #1f1f1f;
+			border: 0.12rem solid var(--cover-detail-color);
 			border-radius: 50%;
 
-			box-shadow: inset 0 0 1rem #00000080;
+			box-shadow:
+				inset 0 0 1rem #00000080,
+				0 0.4rem 1rem #0000004d;
 		}
 
 		.cover-line {
@@ -365,25 +367,27 @@
 			height: 0.25rem;
 			margin: 1rem 0 2.5rem;
 
-			background-color: var(--accent-color);
+			background-color: var(--cover-detail-color);
 			border-radius: 1rem;
 		}
 
 		.cover-instruction {
-			color: #bcbcbc;
+			color: var(--cover-text-color);
 			font-size: 0.8rem;
+			font-weight: 600;
+			letter-spacing: 0.08rem;
 		}
 
 		&:hover {
 			box-shadow:
-				0.7rem 0.7rem 0 var(--heading-color),
+				0.7rem 0.7rem 0 #000000,
 				0 0 0 0.3rem var(--cover-background);
 
 			transform: rotateY(-3deg) translateY(-0.15rem);
 		}
 
 		&:focus-visible {
-			outline: 0.2rem solid var(--accent-color);
+			outline: 0.2rem solid #ffffff;
 			outline-offset: 0.3rem;
 		}
 	}
@@ -450,7 +454,7 @@
 					width: 2.5rem;
 					height: 2.5rem;
 
-					background-color: white;
+					background-color: #ffffff;
 					border: 0.1rem solid var(--social-border-color);
 					border-radius: 50%;
 
@@ -468,12 +472,12 @@
 					}
 
 					&:hover {
-						border-color: var(--accent-color);
+						border-color: var(--heading-color);
 						transform: translateY(-0.15rem);
 					}
 
 					&:focus-visible {
-						outline: 0.15rem solid var(--accent-color);
+						outline: 0.15rem solid var(--heading-color);
 						outline-offset: 0.2rem;
 					}
 				}
@@ -536,11 +540,13 @@
 				font-weight: bold;
 
 				background-color: var(--skill-background);
+				border: 0.1rem solid #cccccc;
 				border-radius: 2rem;
 
 				&:first-child {
-					color: white;
-					background-color: var(--accent-color);
+					color: #ffffff;
+					background-color: var(--heading-color);
+					border-color: var(--heading-color);
 				}
 			}
 		}
@@ -557,7 +563,7 @@
 			margin-top: 1.5rem;
 			padding: 0.6rem 1rem;
 
-			color: white;
+			color: #ffffff;
 			font: inherit;
 			font-size: 0.8rem;
 			font-weight: bold;
@@ -569,23 +575,25 @@
 			cursor: pointer;
 
 			transition:
+				color 0.2s ease,
 				background-color 0.2s ease,
 				transform 0.2s ease;
 
 			&:hover {
-				background-color: var(--accent-color);
+				color: var(--heading-color);
+				background-color: #d9d9d9;
+
 				transform: translateY(-0.1rem);
 			}
 
 			&:focus-visible {
-				outline: 0.15rem solid var(--accent-color);
+				outline: 0.15rem solid var(--heading-color);
 				outline-offset: 0.2rem;
 			}
 		}
 	}
 
-
-	@media (min-width: 48rem) {
+	@media (min-width: 1080px) {
 		.profile-page {
 			align-items: center;
 
