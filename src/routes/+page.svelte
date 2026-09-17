@@ -45,133 +45,131 @@
 
 <main class="profile-page">
 	<article class:open={isOpen} class="book">
-		{#if !isOpen}
-			<button
-				class="front-cover"
-				type="button"
-				onclick={toggleBook}
-			>
-				<span class="cover-logo">
-					{initials}
-				</span>
+		<div class="book-pages">
+			<section class="left-page">
+				{#if person.mugshot_year2}
+					<picture class="image-wrapper">
+						<source
+							type="image/avif"
+							srcset={`https://fdnd.directus.app/assets/${person.mugshot_year2}?width=400&height=400&fit=cover&format=avif&quality=80`}
+						/>
 
-				<h1>{person.name}</h1>
+						<source
+							type="image/webp"
+							srcset={`https://fdnd.directus.app/assets/${person.mugshot_year2}?width=400&height=400&fit=cover&format=webp&quality=80`}
+						/>
 
-				<span class="cover-line"></span>
+						<img
+							class="profile-image"
+							src={`https://fdnd.directus.app/assets/${person.mugshot_year2}?width=400&height=400&fit=cover&quality=80`}
+							alt={`Profile of ${person.name}`}
+						/>
+					</picture>
+				{/if}
 
-				<span class="cover-instruction">
-					CLICK TO OPEN
-				</span>
-			</button>
-		{:else}
-			<div class="book-pages">
-				<section class="left-page">
-					{#if person.mugshot_year2}
-						<picture class="image-wrapper">
-							<source
-								type="image/avif"
-								srcset={`https://fdnd.directus.app/assets/${person.mugshot_year2}?width=400&height=400&fit=cover&format=avif&quality=80`}
-							/>
+				<section class="personal-information">
+					<p class="label">NAME</p>
 
-							<source
-								type="image/webp"
-								srcset={`https://fdnd.directus.app/assets/${person.mugshot_year2}?width=400&height=400&fit=cover&format=webp&quality=80`}
-							/>
+					<h1>{person.name}</h1>
 
-							<img
-								class="profile-image"
-								src={`https://fdnd.directus.app/assets/${person.mugshot_year2}?width=400&height=400&fit=cover&quality=80`}
-								alt={`Profile of ${person.name}`}
-							/>
-						</picture>
-					{/if}
+					<p class="label">TEAM</p>
 
-					<section class="personal-information">
-						<p class="label">NAME</p>
+					<p class="information-value">
+						{person.team_s13 || 'No team available'}
+					</p>
 
-						<h1>{person.name}</h1>
+					<p class="label">SOCIALS</p>
 
-						<p class="label">TEAM</p>
-
-						<p class="information-value">
-							{person.team_s13 || 'No team available'}
-						</p>
-
-						<p class="label">SOCIALS</p>
-
-						<nav class="social-links">
-							{#if person.github_handle}
-								<a
-									class="social-link"
-									href={`https://github.com/${person.github_handle}`}
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									<img
-										src="/github.svg"
-										alt="GitHub"
-									/>
-								</a>
-							{/if}
-
+					<nav class="social-links">
+						{#if person.github_handle}
 							<a
 								class="social-link"
-								href="https://www.linkedin.com/in/jasin-ahmed-964839247/"
+								href={`https://github.com/${person.github_handle}`}
 								target="_blank"
 								rel="noopener noreferrer"
 							>
 								<img
-									src="/linkedin.png"
-									alt="LinkedIn"
+									src="/github.svg"
+									alt="GitHub"
 								/>
 							</a>
-						</nav>
-					</section>
+						{/if}
+
+						<a
+							class="social-link"
+							href="https://www.linkedin.com/in/jasin-ahmed-964839247/"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<img
+								src="/Linkedin.png"
+								alt="LinkedIn"
+							/>
+						</a>
+					</nav>
+				</section>
+			</section>
+
+			<section class="right-page">
+				<section class="about">
+					<h2>ABOUT ME</h2>
+
+					<p>
+						{person.bio || 'This member has not written an about me yet.'}
+					</p>
 				</section>
 
-				<section class="right-page">
-					<section class="about">
-						<h2>ABOUT ME</h2>
+				<section class="skills">
+					<h2>SKILLS</h2>
 
-						<p>
-							{person.bio || 'This member has not written an about me yet.'}
-						</p>
-					</section>
-
-					<section class="skills">
-						<h2>SKILLS</h2>
-
-						<ul>
-							{#each skills as skill}
-								<li>{skill}</li>
-							{:else}
-								<li>No skills available</li>
-							{/each}
-						</ul>
-					</section>
-
-					<section class="hobbies">
-						<h2>HOBBIES</h2>
-
-						<ul>
-							{#each hobbies as hobby}
-								<li>{hobby}</li>
-							{:else}
-								<li>No hobbies available</li>
-							{/each}
-						</ul>
-					</section>
-
-					<button
-						class="close-book"
-						type="button"
-						onclick={toggleBook}
-					>
-						CLOSE BOOK
-					</button>
+					<ul>
+						{#each skills as skill}
+							<li>{skill}</li>
+						{:else}
+							<li>No skills available</li>
+						{/each}
+					</ul>
 				</section>
-			</div>
-		{/if}
+
+				<section class="hobbies">
+					<h2>HOBBIES</h2>
+
+					<ul>
+						{#each hobbies as hobby}
+							<li>{hobby}</li>
+						{:else}
+							<li>No hobbies available</li>
+						{/each}
+					</ul>
+				</section>
+
+				<button
+					class="close-book"
+					type="button"
+					onclick={toggleBook}
+				>
+					CLOSE BOOK
+				</button>
+			</section>
+		</div>
+
+		<button
+			class="front-cover"
+			type="button"
+			onclick={toggleBook}
+		>
+			<span class="cover-logo">
+				{initials}
+			</span>
+
+			<h1>{person.name}</h1>
+
+			<span class="cover-line"></span>
+
+			<span class="cover-instruction">
+				CLICK TO OPEN
+			</span>
+		</button>
 	</article>
 </main>
 
@@ -207,21 +205,66 @@
 	}
 
 	.book {
+		position: relative;
+
 		width: 100%;
 		max-width: 22rem;
+		min-height: 34rem;
 
 		background-color: var(--paper-color);
 		border-radius: var(--book-radius);
 		box-shadow: var(--book-shadow);
 
+		perspective: 100rem;
 		overflow: hidden;
 
+		transition:
+			max-width 0.8s ease,
+			min-height 0.8s ease;
+
 		&.open {
-			max-width: 22rem;
+			min-height: 68rem;
+
+			.book-pages {
+				position: relative;
+
+				opacity: 1;
+				visibility: visible;
+
+				transition:
+					opacity 0.4s ease 0.5s,
+					visibility 0s;
+			}
+
+			.front-cover {
+				opacity: 0;
+
+				pointer-events: none;
+
+				transform: rotateY(-180deg);
+			}
 		}
 	}
 
+	.book-pages {
+		position: absolute;
+		inset: 0;
+
+		width: 100%;
+
+		opacity: 0;
+		visibility: hidden;
+
+		transition:
+			opacity 0.2s ease,
+			visibility 0s linear 0.8s;
+	}
+
 	.front-cover {
+		position: absolute;
+		inset: 0;
+		z-index: 2;
+
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -243,8 +286,17 @@
 			0.5rem 0.5rem 0 var(--heading-color),
 			0 0 0 0.3rem var(--cover-background);
 
+		backface-visibility: hidden;
 		box-sizing: border-box;
 		cursor: pointer;
+
+		transform: rotateY(0);
+		transform-origin: left center;
+		transform-style: preserve-3d;
+
+		transition:
+			transform 1s ease,
+			opacity 0.3s ease 0.7s;
 
 		h1 {
 			margin: 0;
@@ -287,10 +339,6 @@
 			outline: 0.2rem solid var(--accent-color);
 			outline-offset: 0.3rem;
 		}
-	}
-
-	.book-pages {
-		width: 100%;
 	}
 
 	.left-page {
@@ -473,6 +521,8 @@
 
 			cursor: pointer;
 
+			transition: background-color 0.2s ease;
+
 			&:hover {
 				background-color: var(--accent-color);
 			}
@@ -496,6 +546,7 @@
 		.book {
 			&.open {
 				max-width: 52rem;
+				min-height: 38rem;
 			}
 		}
 
@@ -533,7 +584,11 @@
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.social-link {
+		.book,
+		.front-cover,
+		.book-pages,
+		.social-link,
+		.close-book {
 			transition-duration: 0.01ms;
 		}
 	}
