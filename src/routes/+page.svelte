@@ -170,7 +170,7 @@
 							rel="noopener noreferrer"
 						>
 							<img
-								src="/linkedin.png"
+								src="/Linkedin.png"
 								alt="LinkedIn"
 							/>
 						</a>
