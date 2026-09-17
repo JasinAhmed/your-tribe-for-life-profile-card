@@ -134,16 +134,20 @@
 	.profile-page {
 		--page-background: #f5f0e5;
 		--paper-color: #fffdf6;
-		--text-color: #173c33;
+		--heading-color: #173c33;
 		--body-text-color: #111111;
 		--label-color: #5b7a71;
 		--accent-color: #ef8c43;
+		--skill-background: #c8d9d3;
+		--line-color: #333333;
+		--social-border-color: #d7d0c0;
 		--book-radius: 1rem;
 		--book-shadow: 0 0.5rem 1rem #0000001a;
 		--page-padding: 2rem;
 
 		display: flex;
 		justify-content: center;
+		align-items: flex-start;
 
 		width: 100%;
 		min-height: 100svh;
@@ -184,7 +188,7 @@
 
 			object-fit: cover;
 
-			border: 0.15rem dashed var(--text-color);
+			border: 0.15rem dashed var(--heading-color);
 			border-radius: var(--book-radius);
 
 			box-sizing: border-box;
@@ -213,6 +217,172 @@
 				font-size: 1rem;
 				font-weight: 600;
 			}
+
+			.social-links {
+				display: flex;
+				gap: 0.75rem;
+
+				margin-top: 0.5rem;
+
+				.social-link {
+					display: grid;
+					place-items: center;
+
+					width: 2.5rem;
+					height: 2.5rem;
+
+					background-color: white;
+					border: 0.1rem solid var(--social-border-color);
+					border-radius: 50%;
+
+					transition:
+						transform 0.2s ease,
+						border-color 0.2s ease;
+
+					img {
+						display: block;
+
+						width: 1.4rem;
+						height: 1.4rem;
+
+						object-fit: contain;
+					}
+
+					&:hover {
+						border-color: var(--accent-color);
+						transform: translateY(-0.15rem);
+					}
+
+					&:focus-visible {
+						outline: 0.15rem solid var(--accent-color);
+						outline-offset: 0.2rem;
+					}
+				}
+			}
+		}
+	}
+
+	.right-page {
+		padding: var(--page-padding);
+
+		border-top: 0.15rem solid var(--line-color);
+
+		.about,
+		.skills,
+		.hobbies {
+			h2 {
+				margin: 0 0 0.8rem;
+
+				color: var(--heading-color);
+				font-size: 1.3rem;
+			}
+		}
+
+		.about {
+			padding-bottom: 1.5rem;
+
+			p {
+				margin: 0;
+
+				color: var(--body-text-color);
+				font-size: 1rem;
+				line-height: 1.6;
+			}
+		}
+
+		.skills,
+		.hobbies {
+			padding: 1.5rem 0;
+
+			border-top: 0.1rem solid var(--line-color);
+
+			ul {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5rem;
+
+				margin: 0;
+				padding: 0;
+
+				list-style: none;
+			}
+		}
+
+		.skills {
+			li {
+				padding: 0.35rem 0.8rem;
+
+				color: var(--body-text-color);
+				font-size: 0.9rem;
+				font-weight: bold;
+
+				background-color: var(--skill-background);
+				border-radius: 2rem;
+
+				&:first-child {
+					color: white;
+					background-color: var(--accent-color);
+				}
+			}
+		}
+
+		.hobbies {
+			padding-bottom: 0;
+
+			li {
+				color: var(--body-text-color);
+				font-size: 1rem;
+				font-weight: 600;
+			}
+		}
+	}
+
+	/* Tablet and desktop styling */
+
+	@media (min-width: 48rem) {
+		.profile-page {
+			align-items: center;
+
+			padding: 2rem;
+		}
+
+		.book {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+
+			max-width: 52rem;
+			min-height: 38rem;
+		}
+
+		.left-page,
+		.right-page {
+			padding: 3rem;
+		}
+
+		.left-page {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+
+			.image-wrapper {
+				max-width: 15rem;
+				margin: 0 auto 1.5rem;
+			}
+		}
+
+		.right-page {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+
+			border-top: 0;
+			border-left: 0.15rem solid var(--line-color);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.social-link {
+			transition-duration: 0.01ms;
 		}
 	}
 </style>
