@@ -3,28 +3,34 @@
 
 	const person = data.person
 
+	// Convert custom data from JSON text to an object when needed
 	function parseCustom(custom) {
 		if (typeof custom === 'string') {
 			return JSON.parse(custom)
 		}
 
+		// Return the existing object or an empty object
 		return custom || {}
 	}
 
+	// Store the parsed custom data
 	const custom = parseCustom(person.custom)
 
+	// Create an array with the available skills
 	const skills = [
 		custom.skill1,
 		custom.skill2,
 		custom.skill3
 	].filter(Boolean)
 
+	// Create an array with the available hobbies
 	const hobbies = [
 		custom.hobby1,
 		custom.hobby2,
 		custom.hobby3
 	].filter(Boolean)
 
+	// Create initials from the first two parts of the name
 	const initials = person.name
 		?.split(' ')
 		.map((namePart) => namePart[0])
@@ -32,8 +38,10 @@
 		.join('')
 		.toUpperCase()
 
+	// Keep track of whether the book is open or closed
 	let isOpen = $state(false)
 
+	// Open the book when closed and close it when open
 	function toggleBook() {
 		isOpen = !isOpen
 	}
@@ -191,6 +199,10 @@
 		--book-shadow: 0 0.5rem 1rem #0000001a;
 		--page-padding: 2rem;
 
+		/* Natural animation speed and easing */
+		--book-duration: 1.1s;
+		--book-easing: cubic-bezier(0.22, 1, 0.36, 1);
+
 		display: flex;
 		justify-content: center;
 		align-items: flex-start;
@@ -209,39 +221,45 @@
 
 		width: 100%;
 		max-width: 22rem;
-		min-height: 34rem;
+		height: 34rem;
 
 		background-color: var(--paper-color);
 		border-radius: var(--book-radius);
 		box-shadow: var(--book-shadow);
 
+		/* Gives the cover depth during the rotation */
 		perspective: 100rem;
 		overflow: hidden;
 
 		transition:
-			max-width 0.8s ease,
-			min-height 0.8s ease;
+			max-width var(--book-duration) var(--book-easing),
+			height var(--book-duration) var(--book-easing),
+			box-shadow var(--book-duration) ease;
 
 		&.open {
-			min-height: 68rem;
+			height: 68rem;
+
+			box-shadow: 0 1rem 2rem #00000026;
 
 			.book-pages {
-				position: relative;
-
 				opacity: 1;
 				visibility: visible;
 
+				transform: translateY(0);
+
 				transition:
-					opacity 0.4s ease 0.5s,
+					opacity 0.5s ease 0.45s,
+					transform 0.7s var(--book-easing) 0.35s,
 					visibility 0s;
 			}
 
 			.front-cover {
 				opacity: 0;
 
+				/* Allow clicks on the social links behind the cover */
 				pointer-events: none;
 
-				transform: rotateY(-180deg);
+				transform: rotateY(-180deg) scale(0.98);
 			}
 		}
 	}
@@ -251,13 +269,19 @@
 		inset: 0;
 
 		width: 100%;
+		height: 100%;
 
 		opacity: 0;
 		visibility: hidden;
 
+		transform: translateY(0.75rem);
+
+		overflow-y: auto;
+
 		transition:
-			opacity 0.2s ease,
-			visibility 0s linear 0.8s;
+			opacity 0.25s ease,
+			transform 0.4s ease,
+			visibility 0s linear var(--book-duration);
 	}
 
 	.front-cover {
@@ -271,13 +295,20 @@
 		align-items: center;
 
 		width: 100%;
-		min-height: 34rem;
+		height: 100%;
 		padding: var(--page-padding);
 
 		color: var(--cover-text-color);
 		font: inherit;
 
-		background-color: var(--cover-background);
+		background:
+			linear-gradient(
+				135deg,
+				#050505 0%,
+				#151515 55%,
+				#050505 100%
+			);
+
 		border: 0.15rem solid var(--cover-detail-color);
 		border-left: 0.7rem solid var(--heading-color);
 		border-radius: var(--book-radius);
@@ -286,17 +317,22 @@
 			0.5rem 0.5rem 0 var(--heading-color),
 			0 0 0 0.3rem var(--cover-background);
 
+		/* Hide the back of the cover while it turns */
 		backface-visibility: hidden;
 		box-sizing: border-box;
 		cursor: pointer;
 
-		transform: rotateY(0);
+		/* The cover rotates from the left side like a real book */
+		transform: rotateY(0) scale(1);
 		transform-origin: left center;
 		transform-style: preserve-3d;
 
+		will-change: transform, opacity;
+
 		transition:
-			transform 1s ease,
-			opacity 0.3s ease 0.7s;
+			transform var(--book-duration) var(--book-easing),
+			opacity 0.25s ease 0.75s,
+			box-shadow var(--book-duration) ease;
 
 		h1 {
 			margin: 0;
@@ -318,7 +354,10 @@
 			font-weight: bold;
 
 			background-color: #1d1d1d;
+			border: 0.1rem solid #333333;
 			border-radius: 50%;
+
+			box-shadow: inset 0 0 1rem #00000080;
 		}
 
 		.cover-line {
@@ -333,6 +372,14 @@
 		.cover-instruction {
 			color: #bcbcbc;
 			font-size: 0.8rem;
+		}
+
+		&:hover {
+			box-shadow:
+				0.7rem 0.7rem 0 var(--heading-color),
+				0 0 0 0.3rem var(--cover-background);
+
+			transform: rotateY(-3deg) translateY(-0.15rem);
 		}
 
 		&:focus-visible {
@@ -521,10 +568,13 @@
 
 			cursor: pointer;
 
-			transition: background-color 0.2s ease;
+			transition:
+				background-color 0.2s ease,
+				transform 0.2s ease;
 
 			&:hover {
 				background-color: var(--accent-color);
+				transform: translateY(-0.1rem);
 			}
 
 			&:focus-visible {
@@ -534,7 +584,6 @@
 		}
 	}
 
-	/* Tablet and desktop styling */
 
 	@media (min-width: 48rem) {
 		.profile-page {
@@ -546,15 +595,13 @@
 		.book {
 			&.open {
 				max-width: 52rem;
-				min-height: 38rem;
+				height: 38rem;
 			}
 		}
 
 		.book-pages {
 			display: grid;
 			grid-template-columns: repeat(2, 1fr);
-
-			min-height: 38rem;
 		}
 
 		.left-page,
