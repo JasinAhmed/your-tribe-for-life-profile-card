@@ -132,9 +132,15 @@
 </main>
 <style>
 	.profile-page {
+		--page-background: #f5f0e5;
 		--paper-color: #fffdf6;
 		--text-color: #173c33;
+		--body-text-color: #111111;
+		--label-color: #5b7a71;
 		--accent-color: #ef8c43;
+		--book-radius: 1rem;
+		--book-shadow: 0 0.5rem 1rem #0000001a;
+		--page-padding: 2rem;
 
 		display: flex;
 		justify-content: center;
@@ -143,7 +149,7 @@
 		min-height: 100svh;
 		padding: 1rem;
 
-		background-color: #f5f0e5;
+		background-color: var(--page-background);
 
 		box-sizing: border-box;
 	}
@@ -153,9 +159,60 @@
 		max-width: 22rem;
 
 		background-color: var(--paper-color);
-		border-radius: 1rem;
-		box-shadow: 0 0.5rem 1rem #0000001a;
+		border-radius: var(--book-radius);
+		box-shadow: var(--book-shadow);
 
 		overflow: hidden;
+	}
+
+	.left-page {
+		padding: var(--page-padding);
+
+		.image-wrapper {
+			display: block;
+
+			width: 100%;
+			max-width: 15rem;
+			margin: 0 auto 1.5rem;
+		}
+
+		.profile-image {
+			display: block;
+
+			width: 100%;
+			aspect-ratio: 1 / 1;
+
+			object-fit: cover;
+
+			border: 0.15rem dashed var(--text-color);
+			border-radius: var(--book-radius);
+
+			box-sizing: border-box;
+		}
+
+		.personal-information {
+			.label {
+				margin: 0;
+
+				color: var(--label-color);
+				font-size: 0.75rem;
+				font-weight: bold;
+			}
+
+			h1 {
+				margin: 0.3rem 0 1rem;
+
+				color: var(--body-text-color);
+				font-size: 1.3rem;
+			}
+
+			.information-value {
+				margin: 0.3rem 0 1rem;
+
+				color: var(--body-text-color);
+				font-size: 1rem;
+				font-weight: 600;
+			}
+		}
 	}
 </style>
